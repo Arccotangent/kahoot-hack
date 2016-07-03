@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kahoot-hack.iml" filepath="$PROJECT_DIR$/.idea/modules/kahoot-hack.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kahoot-hack_main.iml" filepath="$PROJECT_DIR$/.idea/modules/kahoot-hack_main.iml" group="kahoot-hack" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kahoot-hack_test.iml" filepath="$PROJECT_DIR$/.idea/modules/kahoot-hack_test.iml" group="kahoot-hack" />
+    </modules>
+  </component>
+</project>
