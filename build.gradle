@@ -19,4 +19,6 @@ jar {
     manifest {
         attributes 'Main-Class': 'net.arccotangent.kahoothack.App'
     }
+
+    from {configurations.compile.collect {it.isDirectory() ? it : zipTree(it)}}
 }
