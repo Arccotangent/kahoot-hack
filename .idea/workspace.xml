@@ -365,9 +365,9 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/java/net/arccotangent/kahoothack/App.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/arccotangent/kahoothack/Kahoot.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/arccotangent/kahoothack/HTTP.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/arccotangent/kahoothack/Session.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/main/java/net/arccotangent/kahoothack/HTTP.java" />
       </list>
     </option>
   </component>
@@ -439,6 +439,50 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoot-hack" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoot-hack" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoot-hack" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoot-hack" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoothack" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -816,17 +860,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/arccotangent/kahoothack/HTTP.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="556">
-          <caret line="39" column="1" selection-start-line="39" selection-start-column="1" selection-end-line="39" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/arccotangent/kahoothack/Session.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="28" column="1" selection-start-line="28" selection-start-column="1" selection-end-line="28" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -834,6 +874,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="91">
           <caret line="614" column="37" selection-start-line="614" selection-start-column="37" selection-end-line="614" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2355#2356#0" expanded="true" />
+            <element signature="e#2373#2374#0" expanded="true" />
+            <element signature="e#2551#2552#0" expanded="true" />
+            <element signature="e#2569#2570#0" expanded="true" />
+            <element signature="e#2716#2717#0" expanded="true" />
+            <element signature="e#2736#2737#0" expanded="true" />
+            <element signature="e#4039#4040#0" expanded="true" />
+            <element signature="e#4063#4064#0" expanded="true" />
+            <element signature="e#4138#4139#0" expanded="true" />
+            <element signature="e#4156#4157#0" expanded="true" />
+            <element signature="e#4331#4332#0" expanded="true" />
+            <element signature="e#4352#4353#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -856,6 +911,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="556">
           <caret line="90" column="1" selection-start-line="90" selection-start-column="1" selection-end-line="90" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/arccotangent/kahoothack/HTTP.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="36" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

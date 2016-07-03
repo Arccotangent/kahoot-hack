@@ -9,7 +9,7 @@ import org.apache.http.impl.client.HttpClients;
 
 class HTTP {
 
-	static String uagent = "Mozilla/5.0 (Linux; Android 4.4.2; en-us; SAMSUNG SCH-I545 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Version/1.5 Chrome/28.0.1500.94 Mobile Safari/537.36";
+	static String uagent = "hack/1.0";
 	static String conn = "Keep-Alive";
 	static String ctype = "application/json;charset=UTF-8";
 
