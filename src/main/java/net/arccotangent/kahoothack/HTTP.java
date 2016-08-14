@@ -9,7 +9,7 @@ import org.apache.http.impl.client.HttpClients;
 
 class HTTP {
 
-	static String uagent = "hack/1.0";
+	static String uagent = "openresty/1.7.7.1";
 	static String conn = "Keep-Alive";
 	static String ctype = "application/json;charset=UTF-8";
 

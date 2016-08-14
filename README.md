@@ -4,6 +4,8 @@ Reverse engineering kahoot.it
 
 This has similar functionality to the code here https://github.com/unixpickle/kahoot-hack but is more portable as it is written in Java. The tools here contain more functionality. One of the primary goals here is to build a command line text based client for Kahoot.
 
+There is a bug with team mode that causes the program to answer twice, but the program will still work with it.
+
 ## Building
 
 This program uses the Gradle build system. Dependencies are managed by Gradle. Open a terminal/cmd window and navigate to the kahoot-hack folder.

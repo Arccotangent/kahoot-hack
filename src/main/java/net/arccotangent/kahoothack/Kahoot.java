@@ -32,6 +32,8 @@ class Kahoot extends Thread {
 	private boolean qa; //Question answered? prevents duplicate returns on getLastAnswerBlocking
 	private boolean la2v = false; //Was 2 a valid answer on the last question?
 	private boolean la3v = false; //Was 3 a valid answer on the last question?
+	
+	private static boolean debug = false; //Connection debug mode
 
 	/**
 	 * Construct a new Kahoot object. The newly constructed object can be thought of as a computer player.
@@ -57,6 +59,10 @@ class Kahoot extends Thread {
 			this.rand();
 		}
 		this.disconnect();
+	}
+	
+	public static boolean isDebug() {
+		return debug;
 	}
 
 	/**
@@ -145,11 +151,15 @@ class Kahoot extends Thread {
 	 * This function must be called regardless of whether the bot will be allowed to manage itself or not. Check the run() documentation for more information.
 	 * @param gamepin the game PIN
 	 */
-	void initialize(int gamepin) {
-		String token = Session.getSessionToken(gamepin);
-		stoken = token;
+	public void initialize(int gamepin) {
+		stoken = Session.getSessionToken(gamepin);
 		gameid = gamepin;
 		cli = HTTP.getClient();
+		
+		if (debug) {
+			System.out.println("stoken = " + stoken);
+			System.out.println("gameid = " + gameid);
+		}
 
 		JSONObject advice = new JSONObject();
 		advice.put("timeout", 60000);
@@ -167,19 +177,7 @@ class Kahoot extends Thread {
 
 		k.put("supportedConnectionTypes", supportedConnTypes.toString());
 
-		/*
-		try {
-			System.out.println(wss.connectBlocking());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		wss.send(k.toString());
-		*/
-
-		k.put("supportedConnectionTypes", supportedConnTypes.toString());
-
-		HttpPost p = HTTP.POST(URL_BASE + gamepin + "/" + token + "/handshake", k.toString());
+		HttpPost p = HTTP.POST(URL_BASE + gamepin + "/" + stoken + "/handshake", k.toString());
 		try {
 			CloseableHttpResponse res = cli.execute(p);
 			BasicResponseHandler handler = new BasicResponseHandler();
@@ -192,7 +190,8 @@ class Kahoot extends Thread {
 					bayeux_cookie = bayeux_cookie.substring(0, sc);
 				}
 			}
-			//System.out.println(response);
+			if (debug)
+				System.out.println("1 = " + response);
 			JSONArray r2 = new JSONArray(response);
 			JSONObject r = r2.getJSONObject(0);
 			client_id = r.getString("clientId");
@@ -208,13 +207,14 @@ class Kahoot extends Thread {
 		//c.put("connectionType", "long-polling");
 		c.put("subscription", "/service/controller");
 
-		HttpPost p2 = HTTP.POST(URL_BASE + gamepin + "/" + token, c.toString());
+		HttpPost p2 = HTTP.POST(URL_BASE + gamepin + "/" + stoken, c.toString());
 		p2.setHeader("Cookie", bayeux_cookie);
 		try {
 			CloseableHttpResponse res = cli.execute(p2);
 			BasicResponseHandler handler = new BasicResponseHandler();
 			String response = handler.handleResponse(res);
-			//System.out.println(response);
+			if (debug)
+				System.out.println("2 = " + response);
 			JSONArray r2 = new JSONArray(response);
 			JSONObject r = r2.getJSONObject(0);
 			boolean success = r.getBoolean("successful");
@@ -233,13 +233,14 @@ class Kahoot extends Thread {
 		c2.put("clientId", client_id);
 		c2.put("connectionType", "long-polling");
 
-		HttpPost p3 = HTTP.POST(URL_BASE + gamepin + "/" + token + "/connect", c2.toString());
+		HttpPost p3 = HTTP.POST(URL_BASE + gamepin + "/" + stoken + "/connect", c2.toString());
 		p3.setHeader("Cookie", bayeux_cookie);
 		try {
 			CloseableHttpResponse res = cli.execute(p3);
 			BasicResponseHandler handler = new BasicResponseHandler();
 			String response = handler.handleResponse(res);
-			//System.out.println(response);
+			if (debug)
+				System.out.println("3 = " + response);
 			JSONArray r2 = new JSONArray(response);
 			JSONObject r = r2.getJSONObject(0);
 			boolean success = r.getBoolean("successful");
@@ -259,13 +260,14 @@ class Kahoot extends Thread {
 		//c6.put("connectionType", "long-polling");
 		c6.put("subscription", "/service/status");
 
-		HttpPost p7 = HTTP.POST(URL_BASE + gamepin + "/" + token, c6.toString());
+		HttpPost p7 = HTTP.POST(URL_BASE + gamepin + "/" + stoken, c6.toString());
 		p7.setHeader("Cookie", bayeux_cookie);
 		try {
 			CloseableHttpResponse res = cli.execute(p7);
 			BasicResponseHandler handler = new BasicResponseHandler();
 			String response = handler.handleResponse(res);
-			//System.out.println(response);
+			if (debug)
+				System.out.println("4-1 = " + response);
 			JSONArray r2 = new JSONArray(response);
 			JSONObject r = r2.getJSONObject(0);
 			boolean success = r.getBoolean("successful");
@@ -283,13 +285,14 @@ class Kahoot extends Thread {
 		//c7.put("connectionType", "long-polling");
 		c7.put("subscription", "/service/player");
 
-		HttpPost p8 = HTTP.POST(URL_BASE + gamepin + "/" + token, c7.toString());
+		HttpPost p8 = HTTP.POST(URL_BASE + gamepin + "/" + stoken, c7.toString());
 		p8.setHeader("Cookie", bayeux_cookie);
 		try {
 			CloseableHttpResponse res = cli.execute(p8);
 			BasicResponseHandler handler = new BasicResponseHandler();
 			String response = handler.handleResponse(res);
-			//System.out.println(response);
+			if (debug)
+				System.out.println("4-2 = " + response);
 			JSONArray r2 = new JSONArray(response);
 			JSONObject r = r2.getJSONObject(0);
 			boolean success = r.getBoolean("successful");
@@ -307,13 +310,14 @@ class Kahoot extends Thread {
 		//c7.put("connectionType", "long-polling");
 		c8.put("subscription", "/service/controller");
 
-		HttpPost p9 = HTTP.POST(URL_BASE + gamepin + "/" + token, c8.toString());
+		HttpPost p9 = HTTP.POST(URL_BASE + gamepin + "/" + stoken, c8.toString());
 		p9.setHeader("Cookie", bayeux_cookie);
 		try {
 			CloseableHttpResponse res = cli.execute(p9);
 			BasicResponseHandler handler = new BasicResponseHandler();
 			String response = handler.handleResponse(res);
-			//System.out.println(response);
+			if (debug)
+				System.out.println("4-3 = " + response);
 			JSONArray r2 = new JSONArray(response);
 			JSONObject r = r2.getJSONObject(0);
 			boolean success = r.getBoolean("successful");
@@ -330,7 +334,7 @@ class Kahoot extends Thread {
 	 * Login to the Kahoot game.<br>
 	 * This function is does the same thing as if you were to enter your nickname in the second screen you would see in your browser.
 	 */
-	void login() {
+	public void login() {
 		JSONObject c = new JSONObject();
 		c.put("channel", "/service/controller");
 		c.put("clientId", client_id);
@@ -342,17 +346,18 @@ class Kahoot extends Thread {
 		data.put("host", "kahoot.it");
 		data.put("name", uname);
 
-		c.put("data", data.toString());
+		c.put("data", data);
 
-		String d = "{\"clientId\":\"" + client_id + "\",\"data\":{\"gameid\":" + gameid + ",\"host\":\"kahoot.it\",\"name\":\"" + uname + "\",\"type\":\"login\"},\"channel\":\"/service/controller\"}";
+		//String d = "{\"clientId\":\"" + client_id + "\",\"data\":{\"gameid\":" + gameid + ",\"host\":\"kahoot.it\",\"name\":\"" + uname + "\",\"type\":\"login\"},\"channel\":\"/service/controller\"}";
 
-		HttpPost p = HTTP.POST(URL_BASE + gameid + "/" + stoken, d);
+		HttpPost p = HTTP.POST(URL_BASE + gameid + "/" + stoken, c.toString());
 		p.setHeader("Cookie", bayeux_cookie);
 		try {
 			CloseableHttpResponse res = cli.execute(p);
 			BasicResponseHandler handler = new BasicResponseHandler();
 			String response = handler.handleResponse(res);
-			//System.out.println(response);
+			if (debug)
+				System.out.println("L1 = " + response);
 			JSONArray r2 = new JSONArray(response);
 			JSONObject r = r2.getJSONObject(r2.length() - 1);
 			boolean success = r.getBoolean("successful");
@@ -374,7 +379,8 @@ class Kahoot extends Thread {
 			CloseableHttpResponse res = cli.execute(p2);
 			BasicResponseHandler handler = new BasicResponseHandler();
 			String response = handler.handleResponse(res);
-			//System.out.println(response);
+			if (debug)
+				System.out.println("L2 = " + response);
 			JSONArray r2 = new JSONArray(response);
 			JSONObject r = r2.getJSONObject(r2.length() - 1);
 			boolean success = r.getBoolean("successful");
@@ -393,7 +399,7 @@ class Kahoot extends Thread {
 	 * Disconnect from the Kahoot game.<br>
 	 * It is possible to rejoin the Kahoot game if this function is called before the game is over.
 	 */
-	void disconnect() {
+	public void disconnect() {
 		JSONObject c = new JSONObject();
 		c.put("channel", "/meta/disconnect");
 		c.put("clientId", client_id);
@@ -404,7 +410,8 @@ class Kahoot extends Thread {
 			CloseableHttpResponse res = cli.execute(p);
 			BasicResponseHandler handler = new BasicResponseHandler();
 			String response = handler.handleResponse(res);
-			//System.out.println(response);
+			if (debug)
+				System.out.println("D = " + response);
 			JSONArray r2 = new JSONArray(response);
 			JSONObject r = r2.getJSONObject(0);
 			boolean success = r.getBoolean("successful");
@@ -464,7 +471,8 @@ class Kahoot extends Thread {
 			CloseableHttpResponse res = cli.execute(p);
 			BasicResponseHandler handler = new BasicResponseHandler();
 			String response = handler.handleResponse(res);
-			//System.out.println(response);
+			if (debug)
+				System.out.println("AQ = " + response);
 			JSONArray r2 = new JSONArray(response);
 			JSONObject r = r2.getJSONObject(r2.length() - 1);
 			boolean success = r.getBoolean("successful");
@@ -483,7 +491,7 @@ class Kahoot extends Thread {
 	 * <br>
 	 * <a href="https://github.com/unixpickle/kahoot-hack">unixpickle's Kahoot hack</a>
 	 */
-	void rand() {
+	public void rand() {
 		gm = 2;
 		while (active) {
 			JSONObject c2 = new JSONObject();
@@ -497,7 +505,8 @@ class Kahoot extends Thread {
 				CloseableHttpResponse res = cli.execute(p2);
 				BasicResponseHandler handler = new BasicResponseHandler();
 				String response = handler.handleResponse(res);
-				//System.out.println(response);
+				if (debug)
+					System.out.println("R = " + response);
 				JSONArray r2 = new JSONArray(response);
 				JSONObject r = r2.getJSONObject(r2.length() - 1);
 				boolean success = r.getBoolean("successful");
@@ -548,7 +557,7 @@ class Kahoot extends Thread {
 	 * <br>
 	 * 2 and 3 are only there if the question has them.
 	 */
-	void play() {
+	public void play() {
 		gm = 1;
 		while (active) {
 			JSONObject c2 = new JSONObject();
@@ -562,7 +571,8 @@ class Kahoot extends Thread {
 				CloseableHttpResponse res = cli.execute(p2);
 				BasicResponseHandler handler = new BasicResponseHandler();
 				String response = handler.handleResponse(res);
-				System.out.println(response);
+				if (debug)
+					System.out.println("P = " + response);
 				JSONArray r2 = new JSONArray(response);
 				JSONObject r = r2.getJSONObject(r2.length() - 1);
 				JSONObject a = r2.getJSONObject(0);

@@ -16,7 +16,9 @@ public class Session {
 			CloseableHttpResponse res = cli.execute(req);
 			Header[] h = res.getAllHeaders();
 			for (int i = 0; i < h.length; i++) {
-				if (h[i].getName().equalsIgnoreCase("X-Kahoot-Session-Token")) {
+				if (h[i].getName().equalsIgnoreCase("x-kahoot-session-token")) {
+					if (Kahoot.isDebug())
+						System.out.println("SESSION = " + h[i].getValue());
 					return h[i].getValue();
 				}
 			}
