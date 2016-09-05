@@ -32,6 +32,7 @@ class Kahoot extends Thread {
 	private boolean qa; //Question answered? prevents duplicate returns on getLastAnswerBlocking
 	private boolean la2v = false; //Was 2 a valid answer on the last question?
 	private boolean la3v = false; //Was 3 a valid answer on the last question?
+	private boolean isTeam = false; //Is this a team game or classic PvP?
 	
 	private static boolean debug = false; //Connection debug mode
 
@@ -143,6 +144,14 @@ class Kahoot extends Thread {
 	public String getNemesis() {
 		return nemesis;
 	}
+	
+	/**
+	 * Check whether this game is a team game or not
+	 * @return true if team game, false if classic PvP
+	 */
+	public boolean isTeamGame() {
+		return isTeam;
+	}
 
 	/**
 	 * Initialize this Kahoot object and connect to the server.<br>
@@ -153,6 +162,7 @@ class Kahoot extends Thread {
 	 */
 	public void initialize(int gamepin) {
 		stoken = Session.getSessionToken(gamepin);
+		isTeam = Session.getLastGameTeam();
 		gameid = gamepin;
 		cli = HTTP.getClient();
 		

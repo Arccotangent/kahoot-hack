@@ -4,7 +4,7 @@ Reverse engineering kahoot.it
 
 This has similar functionality to the code here https://github.com/unixpickle/kahoot-hack but is more portable as it is written in Java. The tools here contain more functionality. One of the primary goals here is to build a command line text based client for Kahoot.
 
-There is a bug with team mode that causes the program to answer twice, but the program will still work with it.
+There is a bug with team mode that causes the program to answer twice, but the program will still work with it. Only the first set of answers for a question will be accepted. I am working on fixing this bug.
 
 ## Building
 

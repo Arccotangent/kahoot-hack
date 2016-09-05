@@ -20,6 +20,7 @@ public class App {
 		if (gm == 1) {
 			Kahoot k = new Kahoot(base, stdin, gm, false);
 			k.initialize(gamepin);
+			System.out.println((k.isTeamGame() ? "Gamemode: TEAMS" : "Gamemode: CLASSIC PVP"));
 			k.start();
 		} else if (gm == 2) {
 			System.out.print("Number of bots: ");
@@ -33,6 +34,8 @@ public class App {
 				botz[i] = new Kahoot(name, stdin, gm, true);
 				botz[i].initialize(gamepin);
 			}
+			
+			System.out.println((botz[0].isTeamGame() ? "Gamemode: TEAMS" : "Gamemode: CLASSIC PVP"));
 
 			for (int i = 0; i < botz.length; i++) {
 				botz[i].start();
