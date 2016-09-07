@@ -15,50 +15,61 @@ import java.util.Scanner;
 class Kahoot extends Thread {
 
 	private final String URL_BASE = "https://kahoot.it/cometd/";
-	private String uname;
-	private String client_id;
+	private String uname; //This Kahoot object's username
+	private String client_id; //Unique client ID assigned to Kahoot clients
 	private CloseableHttpClient cli;
-	private String stoken;
+	private String stoken; //This Kahoot object's session token
 	private String bayeux_cookie;
-	private boolean active = false;
-	private int gameid;
-	private Scanner in;
-	private int gm;
-	private int lastanswer;
+	private boolean active = false; //Whether this Kahoot object is engaged in an active game or not
+	private int gameid; //The game pin
+	private Scanner in; //A scanner hopefully scanning System.in
+	private int gm; //This Kahoot object's operation mode. 1 = play normally, 2 = auto answer questions randomly
+	private int lastanswer; //The last answer submitted to the game
 	private int score; //Score from last question
 	private int totalscore; //Total score
-	private int rank;
-	private String nemesis; //The person directly ahead of us.
+	private int rank; //This Kahoot object's rank
+	private String nemesis; //The person directly ahead of us. If there is no one ahead of us (1st place) this will be set to "no one"
 	private boolean qa; //Question answered? prevents duplicate returns on getLastAnswerBlocking
 	private boolean la2v = false; //Was 2 a valid answer on the last question?
 	private boolean la3v = false; //Was 3 a valid answer on the last question?
 	private boolean isTeam = false; //Is this a team game or classic PvP?
 	
-	private static boolean debug = false; //Connection debug mode
+	private static boolean debug = false; //Connection debug mode, not useful to regular users
 
 	/**
-	 * Construct a new Kahoot object. The newly constructed object can be thought of as a computer player.
+	 * Construct a new Kahoot object. The newly constructed object can be thought of as a computer player.<br>
+	 * This Kahoot object can act as a bot that automatically answers questions randomly.<br>
+	 * It can also act as a regular player, depending on input from the user.
 	 *
-	 * @param username the username that this Kahoot object will use
+	 * @param username the username that this Kahoot object will use to connect to the game
+	 * @param gamepin the Kahoot.it game PIN
 	 * @param stdin a Scanner scanning System.in, if this parameter is not scanning System.in, expect bugs and even crashes.
 	 * @param gamemode the gamemode. 1 = play normally, 2 = auto answer questions randomly, anything else is invalid
 	 * @param instantActive whether the object should instantly be active. If unsure, set to false.
 	 */
-	public Kahoot(String username, Scanner stdin, int gamemode, boolean instantActive) {
+	public Kahoot(String username, int gamepin, Scanner stdin, int gamemode, boolean instantActive) {
 		uname = username;
 		in = stdin;
 		gm = gamemode;
 		active = instantActive;
+		gameid = gamepin;
 	}
-
+	
+	/**
+	 * Start this Kahoot object in a new thread, making concurrency easier.
+	 */
 	public void run() {
-		this.login();
 		if (gm == 1) {
+			//Auto initialization is unnecessary as this Kahoot object is registered as a regular user.
+			this.login();
 			System.out.println("You should be in game, see your name on screen?");
 			this.play();
 		} else if (gm == 2) {
+			this.initialize();
+			this.login();
 			this.rand();
 		}
+		//Any other gamemode is invalid, so disconnect right after login.
 		this.disconnect();
 	}
 	
@@ -120,6 +131,15 @@ class Kahoot extends Thread {
 		qa = false;
 		return lastanswer;
 	}
+	
+	/**
+	 * Get the score from the last question answered
+	 *
+	 * @return score gained from last answered question
+	 */
+	public int getLastScore() {
+		return score;
+	}
 
 	/**
 	 * Get your total score between all questions
@@ -158,12 +178,10 @@ class Kahoot extends Thread {
 	 * This function does the same thing as if you were to enter the game PIN on the Kahoot website, but it does not log you in.<br>
 	 *<br>
 	 * This function must be called regardless of whether the bot will be allowed to manage itself or not. Check the run() documentation for more information.
-	 * @param gamepin the game PIN
 	 */
-	public void initialize(int gamepin) {
-		stoken = Session.getSessionToken(gamepin);
+	public void initialize() {
+		stoken = Session.getSessionToken(gameid);
 		isTeam = Session.getLastGameTeam();
-		gameid = gamepin;
 		cli = HTTP.getClient();
 		
 		if (debug) {
@@ -187,7 +205,7 @@ class Kahoot extends Thread {
 
 		k.put("supportedConnectionTypes", supportedConnTypes.toString());
 
-		HttpPost p = HTTP.POST(URL_BASE + gamepin + "/" + stoken + "/handshake", k.toString());
+		HttpPost p = HTTP.POST(URL_BASE + gameid + "/" + stoken + "/handshake", k.toString());
 		try {
 			CloseableHttpResponse res = cli.execute(p);
 			BasicResponseHandler handler = new BasicResponseHandler();
@@ -217,7 +235,7 @@ class Kahoot extends Thread {
 		//c.put("connectionType", "long-polling");
 		c.put("subscription", "/service/controller");
 
-		HttpPost p2 = HTTP.POST(URL_BASE + gamepin + "/" + stoken, c.toString());
+		HttpPost p2 = HTTP.POST(URL_BASE + gameid + "/" + stoken, c.toString());
 		p2.setHeader("Cookie", bayeux_cookie);
 		try {
 			CloseableHttpResponse res = cli.execute(p2);
@@ -243,7 +261,7 @@ class Kahoot extends Thread {
 		c2.put("clientId", client_id);
 		c2.put("connectionType", "long-polling");
 
-		HttpPost p3 = HTTP.POST(URL_BASE + gamepin + "/" + stoken + "/connect", c2.toString());
+		HttpPost p3 = HTTP.POST(URL_BASE + gameid + "/" + stoken + "/connect", c2.toString());
 		p3.setHeader("Cookie", bayeux_cookie);
 		try {
 			CloseableHttpResponse res = cli.execute(p3);
@@ -270,7 +288,7 @@ class Kahoot extends Thread {
 		//c6.put("connectionType", "long-polling");
 		c6.put("subscription", "/service/status");
 
-		HttpPost p7 = HTTP.POST(URL_BASE + gamepin + "/" + stoken, c6.toString());
+		HttpPost p7 = HTTP.POST(URL_BASE + gameid + "/" + stoken, c6.toString());
 		p7.setHeader("Cookie", bayeux_cookie);
 		try {
 			CloseableHttpResponse res = cli.execute(p7);
@@ -295,7 +313,7 @@ class Kahoot extends Thread {
 		//c7.put("connectionType", "long-polling");
 		c7.put("subscription", "/service/player");
 
-		HttpPost p8 = HTTP.POST(URL_BASE + gamepin + "/" + stoken, c7.toString());
+		HttpPost p8 = HTTP.POST(URL_BASE + gameid + "/" + stoken, c7.toString());
 		p8.setHeader("Cookie", bayeux_cookie);
 		try {
 			CloseableHttpResponse res = cli.execute(p8);
@@ -320,7 +338,7 @@ class Kahoot extends Thread {
 		//c7.put("connectionType", "long-polling");
 		c8.put("subscription", "/service/controller");
 
-		HttpPost p9 = HTTP.POST(URL_BASE + gamepin + "/" + stoken, c8.toString());
+		HttpPost p9 = HTTP.POST(URL_BASE + gameid + "/" + stoken, c8.toString());
 		p9.setHeader("Cookie", bayeux_cookie);
 		try {
 			CloseableHttpResponse res = cli.execute(p9);
