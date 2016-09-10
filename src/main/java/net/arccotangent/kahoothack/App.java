@@ -5,6 +5,8 @@ import java.util.Scanner;
 public class App {
 
 	public static void main(String[] args) {
+		int max_bps = 5; //Maximum bots allowed to connect per second
+		
 		System.out.print("Enter Game PIN: ");
 		final Scanner stdin = new Scanner(System.in);
 		final int gamepin = stdin.nextInt();
@@ -47,7 +49,7 @@ public class App {
 				botz[i].start();
 				System.out.print("Connecting Kahoot bots: " + (i + 1) + " / " + botz.length + "\r");
 				try {
-					Thread.sleep(100); //Limit sign-ins to 10 bots per second
+					Thread.sleep(1000 / max_bps); //Rate limit sign ins to max_bps bots per second
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
