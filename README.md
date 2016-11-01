@@ -6,6 +6,8 @@ This has similar functionality to the code here https://github.com/unixpickle/ka
 
 There is a bug with team mode that causes the program to answer twice, but the program will still work with it. Only the first set of answers for a question will be accepted. I am working on fixing this bug.
 
+I have tested the Kahoot hack, and it seems to work with the apparent protocol change, no changes to the code are needed.
+
 ## Building
 
 This program uses the Gradle build system. Dependencies are managed by Gradle. Open a terminal/cmd window and navigate to the kahoot-hack folder.
