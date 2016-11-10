@@ -36,7 +36,7 @@ public class App {
 				botz[i] = new Kahoot(name, gamepin, stdin, gm, true); //Instantly activate Kahoot object when botting. Otherwise this leads to bugs.
 				System.out.print("Initializing Kahoot bots: " + (i + 1) + " / " + botz.length + "\r");
 				try {
-					Thread.sleep(20); //Limit initializations to 50 bots per second
+					Thread.sleep(10); //Limit initializations to 100 bots per second
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

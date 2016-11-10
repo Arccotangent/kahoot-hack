@@ -17,7 +17,7 @@ class Kahoot extends Thread {
 	private final String URL_BASE = "https://kahoot.it/cometd/";
 	private String uname; //This Kahoot object's username
 	private String client_id; //Unique client ID assigned to Kahoot clients
-	private CloseableHttpClient cli;
+	private CloseableHttpClient cli; //HTTP client
 	private String stoken; //This Kahoot object's session token
 	private String bayeux_cookie;
 	private boolean active = false; //Whether this Kahoot object is engaged in an active game or not
@@ -648,7 +648,7 @@ class Kahoot extends Thread {
 					totalscore = c.getInt("totalScore");
 					rank = c.getInt("rank");
 					Object rawnemesis = c.get("nemesis");
-					if (!(rawnemesis instanceof String)) {
+					if (rawnemesis == null) {
 						nemesis = "no one";
 					} else {
 						nemesis = (String) rawnemesis;

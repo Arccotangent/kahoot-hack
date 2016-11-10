@@ -31,7 +31,6 @@ class HTTP {
 		req.setHeader("Content-Type", ctype);
 		req.setHeader("Origin", "https://kahoot.it");
 		req.setHeader("Accept", "application/json, text/plain, */*");
-		req.setHeader("Cookie", "eyJkZXZpY2VJZCI6ImI4ZmQzNGM4LWYwMGItNGM3MS1hZTZiLTMxOWUwNTQxMzhhYSIsInVzZXJJZCI6IjIyNGNhMWFmLTk5MjQtNDBkZS05NzRlLTdmMjJmOTExYTg0NSIsIm9wdE91dCI6ZmFsc2UsInNlc3Npb25JZCI6MTQ2MTU4ODExMzQ5NiwibGFzdEV2ZW50VGltZSI6MTQ2MTU4ODExMzQ5NiwiZXZlbnRJZCI6MTE2LCJpZGVudGlmeUlkIjoxMTIsInNlcXVlbmNlTnVtYmVyIjoyMjh9");
 		//req.setHeader("accept-encoding", "identity");
 		req.setEntity(e);
 		return req;
