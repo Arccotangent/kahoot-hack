@@ -19,7 +19,6 @@ class HTTP {
 	static HttpGet GET(String url) {
 		HttpGet req = new HttpGet(url);
 		req.setHeader("User-Agent", uagent);
-		//req.setHeader("Connection", conn);
 		return req;
 	}
 
@@ -27,7 +26,6 @@ class HTTP {
 		HttpPost req = new HttpPost(url);
 		HttpEntity e = new ByteArrayEntity(rawdata.getBytes());
 		req.setHeader("User-Agent", uagent);
-		//req.setHeader("Connection", conn);
 		req.setHeader("Content-Type", ctype);
 		req.setHeader("Origin", "https://kahoot.it");
 		req.setHeader("Accept", "application/json, text/plain, */*");

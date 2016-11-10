@@ -37,9 +37,31 @@ public class Session {
 	}
 	
 	/**
+	 * Check if a game PIN is valid.
+	 * @param gamepin The game PIN to check
+	 * @return true if game PIN is valid, false if game PIN is invalid or an exception was thrown.
+	 */
+	static boolean checkPINValidity(int gamepin) {
+		CloseableHttpClient cli = HTTP.getClient();
+		HttpGet req = HTTP.GET("https://kahoot.it/reserve/session/" + gamepin + "/?" + System.currentTimeMillis());
+		try {
+			CloseableHttpResponse res = cli.execute(req);
+			
+			BasicResponseHandler handler = new BasicResponseHandler();
+			int status = res.getStatusLine().getStatusCode();
+			
+			return (status == 200); //200 = OK, if game pin is invalid, a 404 Not Found will be returned
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	/**
 	 * Uses the last challenge solution to decode the session token.
 	 * @param encoded The encoded session token
-	 * @return The decoded session token
+	 * @return The decoded, usable session token
 	 */
 	static String decodeSessionToken(String encoded) {
 		byte[] rawToken = Base64.decodeBase64(encoded);
@@ -51,7 +73,14 @@ public class Session {
 		
 		return new String(rawToken);
 	}
-
+	
+	/**
+	 * Retrieve a session token.<br>
+	 * Note that this function doesn't return the session token in a usable state.<br>
+	 * The session token must be decoded using decodeSessionToken() before it can be used.
+	 * @param gamepin The game PIN to retrieve a session token for
+	 * @return The encoded session token
+	 */
 	static String getSessionToken(int gamepin) {
 		CloseableHttpClient cli = HTTP.getClient();
 		HttpGet req = HTTP.GET("https://kahoot.it/reserve/session/" + gamepin + "/?" + System.currentTimeMillis());

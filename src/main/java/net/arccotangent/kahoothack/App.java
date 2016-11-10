@@ -11,6 +11,14 @@ public class App {
 		final Scanner stdin = new Scanner(System.in);
 		final int gamepin = stdin.nextInt();
 		stdin.nextLine(); //There is a newline character submitted with the int
+		System.out.print("Checking game PIN validity... ");
+		
+		if (Session.checkPINValidity(gamepin)) {
+			System.out.println("valid game PIN!");
+		} else {
+			System.out.println("invalid game PIN! Exiting.");
+			return;
+		}
 
 		System.out.print("Username: ");
 		String base = stdin.nextLine();
