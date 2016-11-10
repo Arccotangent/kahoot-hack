@@ -9,9 +9,8 @@ import org.apache.http.impl.client.HttpClients;
 
 class HTTP {
 
-	static String uagent = "openresty/1.7.7.1";
-	static String conn = "Keep-Alive";
-	static String ctype = "application/json;charset=UTF-8";
+	static String uagent = "Mozilla/5.0 (X11; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0";
+	private static String ctype = "application/json;charset=UTF-8";
 
 	static CloseableHttpClient getClient() {
 		return HttpClients.createDefault();
@@ -32,6 +31,7 @@ class HTTP {
 		req.setHeader("Content-Type", ctype);
 		req.setHeader("Origin", "https://kahoot.it");
 		req.setHeader("Accept", "application/json, text/plain, */*");
+		req.setHeader("Cookie", "eyJkZXZpY2VJZCI6ImI4ZmQzNGM4LWYwMGItNGM3MS1hZTZiLTMxOWUwNTQxMzhhYSIsInVzZXJJZCI6IjIyNGNhMWFmLTk5MjQtNDBkZS05NzRlLTdmMjJmOTExYTg0NSIsIm9wdE91dCI6ZmFsc2UsInNlc3Npb25JZCI6MTQ2MTU4ODExMzQ5NiwibGFzdEV2ZW50VGltZSI6MTQ2MTU4ODExMzQ5NiwiZXZlbnRJZCI6MTE2LCJpZGVudGlmeUlkIjoxMTIsInNlcXVlbmNlTnVtYmVyIjoyMjh9");
 		//req.setHeader("accept-encoding", "identity");
 		req.setEntity(e);
 		return req;

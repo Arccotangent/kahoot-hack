@@ -6,7 +6,7 @@ This has similar functionality to the code here https://github.com/unixpickle/ka
 
 There is a bug with team mode that causes the program to answer twice, but the program will still work with it. Only the first set of answers for a question will be accepted. I am working on fixing this bug.
 
-I have tested the Kahoot hack, and it seems to work with the apparent protocol change, no changes to the code are needed.
+Working as of November 9, 2016, but with bugs in answer correctness reporting that should be fixed soon.
 
 ## Building
 
@@ -20,9 +20,9 @@ The build shouldn't take more than a few minutes on the first run. The final bui
 
 ## Running
 
-You can run the built jar from a terminal/cmd window: `java -jar kahoot-hack-1.0.jar`
+You can run the built jar from a terminal/cmd window: `java -jar kahoot-hack.jar`
 
-Or: `java -jar build/libs/kahoot-hack-1.0.jar`
+Or: `java -jar build/libs/kahoot-hack.jar`
 
 ## Contributing
 

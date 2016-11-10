@@ -181,6 +181,8 @@ class Kahoot extends Thread {
 	 */
 	public void initialize() {
 		stoken = Session.getSessionToken(gameid);
+		stoken = Session.decodeSessionToken(stoken);
+		
 		isTeam = Session.getLastGameTeam();
 		cli = HTTP.getClient();
 		
