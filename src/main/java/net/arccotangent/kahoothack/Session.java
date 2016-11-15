@@ -28,7 +28,7 @@ public class Session {
 		int num2 = Integer.parseInt(challengeArray[2]);
 		int num3 = Integer.parseInt(challengeArray[4]);
 		
-		int solution = (num1 + num2) * num3;
+		int solution = num1 * (num2 + num3);
 		
 		if (Kahoot.isDebug())
 			System.out.println("CHALLENGE SOLUTION = " + solution);
