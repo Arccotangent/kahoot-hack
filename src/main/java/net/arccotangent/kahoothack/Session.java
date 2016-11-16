@@ -21,14 +21,25 @@ public class Session {
 	}
 	
 	private static int solveChallenge(String challenge) {
-		challenge = challenge.replace(")", "").replace("(", "").replace("+", "").replace("*", "");
+		challenge = challenge.replace(")", "").replace("(", "");
 		String[] challengeArray = challenge.split(" ");
 		
 		int num1 = Integer.parseInt(challengeArray[0]);
 		int num2 = Integer.parseInt(challengeArray[2]);
 		int num3 = Integer.parseInt(challengeArray[4]);
 		
-		int solution = num1 * (num2 + num3);
+		int solution;
+		
+		if (Kahoot.isDebug()) {
+			for (int i = 0; i < challengeArray.length; i++) {
+				System.out.println("challengeArray[" + i + "] = '" + challengeArray[i] + "'");
+			}
+		}
+		
+		if (challengeArray[1].equals("*"))
+			solution = num1 * (num2 + num3);
+		else
+			solution = (num1 + num2) * num3;
 		
 		if (Kahoot.isDebug())
 			System.out.println("CHALLENGE SOLUTION = " + solution);
