@@ -1,0 +1,21 @@
+#!/bin/bash
+# *nix script for running the Kahoot hack
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+	SOURCE="$(readlink "$SOURCE")"
+	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+if [ -r build/libs/kahoot-hack.jar ]; then
+	#Kahoot hack is built, run
+	java -jar build/libs/kahoot-hack.jar
+else
+	#Kahoot hack has not been built yet or is not readable for whatever reason, build automatically and run.
+	echo "Building Kahoot hack executable."
+	bash $DIR/gradlew build
+	java -jar build/libs/kahoot-hack.jar
+fi
+

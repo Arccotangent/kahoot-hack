@@ -6,7 +6,7 @@ This has similar functionality to the code here https://github.com/unixpickle/ka
 
 There is a bug with team mode that causes the program to answer twice, but the program will still work with it. Only the first set of answers for a question will be accepted. I am working on fixing this bug.
 
-Working as of November 10, 2016
+Working as of November 15, 2016
 
 ## Building
 
@@ -16,13 +16,19 @@ To build on \*nix like systems: `./gradlew build`
 
 To build on Windows: `gradlew build`
 
-The build shouldn't take more than a few minutes on the first run. The final built jar can be found in the build/libs folder. The built jar is portable, meaning you can copy it to any spot on your computer and run it from there.
+The build shouldn't take more than a few minutes on the first run. The final built jar can be found in the build/libs folder. The built jar is portable, meaning you can copy it to any spot on your computer (or on any computer) and run it from there.
 
 ## Running
 
 You can run the built jar from a terminal/cmd window: `java -jar kahoot-hack.jar`
 
 Or: `java -jar build/libs/kahoot-hack.jar`
+
+There are 2 scripts you can use to automatically build and run the Kahoot hack.
+
+*nix based systems: `./run` (run)
+
+Windows: `run` (run.bat)
 
 ## Contributing
 
