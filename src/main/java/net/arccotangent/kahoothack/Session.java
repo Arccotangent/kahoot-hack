@@ -21,7 +21,7 @@ public class Session {
 	}
 	
 	private static int solveChallenge(String challenge) {
-		challenge = challenge.replace(")", "").replace("(", "");
+		challenge = challenge.replace("  ", " ").replace(")", "").replace("(", "");
 		String[] challengeArray = challenge.split(" ");
 		
 		int num1 = Integer.parseInt(challengeArray[0]);
