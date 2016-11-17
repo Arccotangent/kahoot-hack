@@ -6,7 +6,7 @@ This has similar functionality to the code here https://github.com/unixpickle/ka
 
 There is a bug with team mode that causes the program to answer twice, but the program will still work with it. Only the first set of answers for a question will be accepted. I am working on fixing this bug.
 
-Working as of November 16, 2016
+Working as of November 17, 2016
 
 ## Building
 
