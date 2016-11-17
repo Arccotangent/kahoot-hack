@@ -72,10 +72,9 @@ public class Session {
 		try {
 			CloseableHttpResponse res = cli.execute(req);
 			
-			BasicResponseHandler handler = new BasicResponseHandler();
 			int status = res.getStatusLine().getStatusCode();
 			
-			return (status == 200); //200 = OK, if game pin is invalid, a 404 Not Found will be returned
+			return (status == 200); //200 = OK, 404 = Not found
 			
 		} catch (IOException e) {
 			e.printStackTrace();

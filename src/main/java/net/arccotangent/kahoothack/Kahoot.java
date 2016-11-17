@@ -73,6 +73,10 @@ class Kahoot extends Thread {
 		this.disconnect();
 	}
 	
+	/**
+	 * Check if debug mode is enabled.
+	 * @return true if debug mode is enabled, false otherwise
+	 */
 	public static boolean isDebug() {
 		return debug;
 	}
@@ -202,7 +206,6 @@ class Kahoot extends Thread {
 		k.put("channel", "/meta/handshake");
 
 		JSONArray supportedConnTypes = new JSONArray();
-		//supportedConnTypes.put("websocket");
 		supportedConnTypes.put("long-polling");
 
 		k.put("supportedConnectionTypes", supportedConnTypes.toString());
@@ -337,7 +340,7 @@ class Kahoot extends Thread {
 		JSONObject c8 = new JSONObject();
 		c8.put("channel", "/meta/subscribe");
 		c8.put("clientId", client_id);
-		//c7.put("connectionType", "long-polling");
+		//c8.put("connectionType", "long-polling");
 		c8.put("subscription", "/service/controller");
 
 		HttpPost p9 = HTTP.POST(URL_BASE + gameid + "/" + stoken, c8.toString());
@@ -378,8 +381,6 @@ class Kahoot extends Thread {
 
 		c.put("data", data);
 
-		//String d = "{\"clientId\":\"" + client_id + "\",\"data\":{\"gameid\":" + gameid + ",\"host\":\"kahoot.it\",\"name\":\"" + uname + "\",\"type\":\"login\"},\"channel\":\"/service/controller\"}";
-
 		HttpPost p = HTTP.POST(URL_BASE + gameid + "/" + stoken, c.toString());
 		p.setHeader("Cookie", bayeux_cookie);
 		try {
@@ -398,8 +399,6 @@ class Kahoot extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		//"advice":{"timeout":0, "interval":0}
 
 		String req = "{\"clientId\":\"" + client_id + "\",\"channel\":\"/meta/connect\",\"connectionType\":\"long-polling\"}";
 
@@ -457,7 +456,6 @@ class Kahoot extends Thread {
 	}
 
 	private void answerQuestion(int ans) {
-		//String device = "{\"userAgent\": \"openhacky/1.7.7.1\", \"screen\": {\"width\": 1337, \"height\": 1337}}";
 		JSONObject device = new JSONObject();
 		device.put("userAgent", HTTP.uagent);
 
@@ -467,8 +465,6 @@ class Kahoot extends Thread {
 
 		device.put("screen", screen);
 
-		//String content = "{\"choice\": " + ans + ", \"meta\": \"{\"lag\": 22, \"device\": \"" + device + "\"}\"}";
-
 		JSONObject meta = new JSONObject();
 		meta.put("lag", 22);
 		meta.put("device", device);
@@ -476,8 +472,6 @@ class Kahoot extends Thread {
 		JSONObject content = new JSONObject();
 		content.put("choice", ans);
 		content.put("meta", meta);
-
-		//String content = "{\"choice\":" + ans + ",\"meta\":{\"lag\":22,\"device\":{\"userAgent\":\"" + HTTP.uagent + "\",\"screen\":{\"width\":360,\"height\":640}}}}";
 
 		JSONObject data = new JSONObject();
 		data.put("id", 6);
@@ -491,10 +485,7 @@ class Kahoot extends Thread {
 		base.put("clientId", client_id);
 		base.put("channel", "/service/controller");
 		base.put("data", data);
-
-		//String data = "{\"id\": 6, \"type\": \"message\", \"gameid\": " + gameid + ", \"host\": \"kahoot.it\", \"content\": \"" + content + "\", \"channel\": \"/service/controller\", \"connectionType\", \"long-polling\", \"clientId\", \"" + client_id + "\"}";
-
-		//System.out.println(base.toString());
+		
 		HttpPost p = HTTP.POST(URL_BASE + gameid + "/" + stoken, base.toString());
 		p.setHeader("Cookie", bayeux_cookie);
 		try {
