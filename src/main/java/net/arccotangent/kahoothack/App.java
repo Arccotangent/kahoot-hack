@@ -3,6 +3,15 @@ package net.arccotangent.kahoothack;
 import java.util.Scanner;
 
 public class App {
+	
+	public static int botsRunning(Kahoot[] bots) {
+		int running = 0;
+		for (Kahoot bot : bots) {
+			if (bot.gameRunning())
+				running++;
+		}
+		return running;
+	}
 
 	public static void main(String[] args) {
 		int max_bps = 5; //Maximum bots allowed to connect per second
@@ -73,7 +82,7 @@ public class App {
 			int c = 0;
 			int d = 0;
 
-			while (botz[botz.length - 1].gameRunning()) { //while the last bot is still in the game...
+			while (botsRunning(botz) >= 1) { //while at least 1 bot is still in the game...
 				for (int i = 0; i < botz.length; i++) { //...get all answers submitted by the bots and count them up...
 					try {
 						int la = botz[i].getLastAnswerBlocking();

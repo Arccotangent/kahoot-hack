@@ -34,7 +34,7 @@ class Kahoot extends Thread {
 	private boolean la3v = false; //Was 3 a valid answer on the last question?
 	private boolean isTeam = false; //Is this a team game or classic PvP?
 	
-	private static boolean debug = false; //Connection debug mode, not useful to regular users
+	private static boolean debug = true; //Connection debug mode, not useful to regular users
 
 	/**
 	 * Construct a new Kahoot object. The newly constructed object can be thought of as a computer player.<br>
@@ -530,6 +530,10 @@ class Kahoot extends Thread {
 					System.out.println("R = " + response);
 				JSONArray r2 = new JSONArray(response);
 				JSONObject r = r2.getJSONObject(r2.length() - 1);
+				if (response.contains("kick")) {
+					System.out.println("Bot with username '" + uname + "' was kicked from the game!");
+					active = false;
+				}
 				boolean success = r.getBoolean("successful");
 				if (!success) {
 					System.out.println("[LOGIN/FINISH] Error connecting to server! Full server response below.");
@@ -597,6 +601,10 @@ class Kahoot extends Thread {
 				JSONArray r2 = new JSONArray(response);
 				JSONObject r = r2.getJSONObject(r2.length() - 1);
 				JSONObject a = r2.getJSONObject(0);
+				if (response.contains("kick")) {
+					System.out.println("You were kicked from the game!");
+					active = false;
+				}
 				boolean success = r.getBoolean("successful");
 				if (!success) {
 					System.out.println("[LOGIN/FINISH] Error connecting to server! Full server response below.");
