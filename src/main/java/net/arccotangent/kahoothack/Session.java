@@ -74,31 +74,8 @@ public class Session {
 			for (int i = 0; i < challengeArray.length; i++) {
 				System.out.println("challengeArray[" + i + "] = '" + challengeArray[i] + "'");
 			}
-		}
-		
-		/*
-		switch (challengeArray[1]) {
-			case "*":
-				solution = num1 * (num2 + num3);
-				break;
-			case "+":
-				solution = (num1 + num2) * num3;
-				break;
-			case "-":
-				solution = num1 - (num2 * num3);
-				break;
-			default:
-				solution = -1;
-				System.out.println("An unknown challenge was returned. Please report this to the developers.");
-				for (int i = 0; i < challengeArray.length; i++) {
-					System.out.println("challengeArray[" + i + "] = '" + challengeArray[i] + "'");
-				}
-				break;
-		}
-		*/
-		
-		if (Kahoot.isDebug())
 			System.out.println("CHALLENGE SOLUTION = " + solution);
+		}
 		
 		return solution;
 	}

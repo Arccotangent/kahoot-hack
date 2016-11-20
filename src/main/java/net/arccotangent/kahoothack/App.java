@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class App {
 	
-	public static int botsRunning(Kahoot[] bots) {
+	private static int botsRunning(Kahoot[] bots) {
 		int running = 0;
 		for (Kahoot bot : bots) {
 			if (bot.gameRunning())
@@ -59,8 +59,6 @@ public class App {
 				}
 			}
 			System.out.println("");
-			
-			System.out.println((botz[0].isTeamGame() ? "Gamemode: TEAMS" : "Gamemode: CLASSIC PVP"));
 
 			for (int i = 0; i < botz.length; i++) {
 				botz[i].start();
@@ -72,7 +70,8 @@ public class App {
 				}
 			}
 			System.out.println("");
-
+			
+			System.out.println((botz[0].isTeamGame() ? "Gamemode: TEAMS" : "Gamemode: CLASSIC PVP"));
 			System.out.println("All bots are in game. While the bots are running, the main thread will print answer statistics.");
 
 			int quid = 0; //Question number
@@ -83,9 +82,9 @@ public class App {
 			int d = 0;
 
 			while (botsRunning(botz) >= 1) { //while at least 1 bot is still in the game...
-				for (int i = 0; i < botz.length; i++) { //...get all answers submitted by the bots and count them up...
+				for (Kahoot bot : botz) { //...get all answers submitted by the bots and count them up...
 					try {
-						int la = botz[i].getLastAnswerBlocking();
+						int la = bot.getLastAnswerBlocking();
 						if (la == 0) {
 							a++;
 						} else if (la == 1) {
@@ -101,7 +100,7 @@ public class App {
 						e.printStackTrace();
 					}
 				}
-				if (!botz[botz.length - 1].gameRunning()) {
+				if (botsRunning(botz) < 1) {
 					break;
 				}
 				quid++;

@@ -34,7 +34,7 @@ class Kahoot extends Thread {
 	private boolean la3v = false; //Was 3 a valid answer on the last question?
 	private boolean isTeam = false; //Is this a team game or classic PvP?
 	
-	private static boolean debug = true; //Connection debug mode, not useful to regular users
+	private static boolean debug = false; //Connection debug mode, not useful to regular users
 
 	/**
 	 * Construct a new Kahoot object. The newly constructed object can be thought of as a computer player.<br>
