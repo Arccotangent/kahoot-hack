@@ -12,6 +12,26 @@ public class App {
 		}
 		return running;
 	}
+	
+	private static boolean q2Valid(Kahoot[] bots) {
+		boolean valid = false;
+		for (Kahoot bot : bots) {
+			valid = bot.wasLastQuestionAnswer2Valid();
+			if (valid)
+				break;
+		}
+		return valid;
+	}
+	
+	private static boolean q3Valid(Kahoot[] bots) {
+		boolean valid = false;
+		for (Kahoot bot : bots) {
+			valid = bot.wasLastQuestionAnswer3Valid();
+			if (valid)
+				break;
+		}
+		return valid;
+	}
 
 	public static void main(String[] args) {
 		int max_bps = 5; //Maximum bots allowed to connect per second
@@ -80,6 +100,7 @@ public class App {
 			int b = 0;
 			int c = 0;
 			int d = 0;
+			int invalid = 0;
 
 			while (botsRunning(botz) >= 1) { //while at least 1 bot is still in the game...
 				for (Kahoot bot : botz) { //...get all answers submitted by the bots and count them up...
@@ -93,6 +114,8 @@ public class App {
 							c++;
 						} else if (la == 3) {
 							d++;
+						} else if (la == -1) {
+							invalid++;
 						} else {
 							break;
 						}
@@ -107,12 +130,14 @@ public class App {
 				System.out.println("---QUESTION " + quid + " STATISTICS---"); //..then display the statistics...
 				System.out.println("Answer 0: " + a);
 				System.out.println("Answer 1: " + b);
-				System.out.println("Answer 2: " + c + (botz[botz.length - 1].wasLastQuestionAnswer2Valid() ? "" : "(invalid answer)"));
-				System.out.println("Answer 3: " + d + (botz[botz.length - 1].wasLastQuestionAnswer3Valid() ? "" : "(invalid answer)"));
+				System.out.println("Answer 2: " + c + (q2Valid(botz) ? "" : "(invalid answer)"));
+				System.out.println("Answer 3: " + d + (q3Valid(botz) ? "" : "(invalid answer)"));
+				System.out.println("Invalid (disconnected/kicked from game): " + invalid);
 				a = 0; //...finally clear the variables for the next count
 				b = 0;
 				c = 0;
 				d = 0;
+				invalid = 0;
 			}
 
 			System.out.println("The game appears to have ended. Exiting the program!");

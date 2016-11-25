@@ -27,6 +27,9 @@ public class Session {
 		
 		long solution;
 		
+		//Numbers occur on each even index of the array such as 0, 2, 4, and so on
+		//Operators occur on each odd index of the array such as 1, 3, 5, and so on
+		
 		if (Pattern.matches("^([0-9]*) \\* \\(([0-9]*) \\+ ([0-9]*)\\)$", challenge)) {
 			challenge = challenge.replace("(", "").replace(")", "");
 			challengeArray = challenge.split(" ");

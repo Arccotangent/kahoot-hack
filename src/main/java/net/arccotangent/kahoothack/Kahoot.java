@@ -18,9 +18,9 @@ class Kahoot extends Thread {
 	private String uname; //This Kahoot object's username
 	private String client_id; //Unique client ID assigned to Kahoot clients
 	private CloseableHttpClient cli; //HTTP client
-	private String stoken; //This Kahoot object's session token
+	private String stoken; //This Kahoot object's decoded session token
 	private String bayeux_cookie;
-	private boolean active = false; //Whether this Kahoot object is engaged in an active game or not
+	private boolean active = false; //Whether this Kahoot object is connected to a game or not
 	private int gameid; //The game pin
 	private Scanner in; //A scanner hopefully scanning System.in
 	private int gm; //This Kahoot object's operation mode. 1 = play normally, 2 = auto answer questions randomly
@@ -111,7 +111,7 @@ class Kahoot extends Thread {
 	 * WARNING: This function is blocking, meaning it will halt execution (unless this object is on its own thread) until a question is answered. This function is useful for counting answers submitted by the rand() function.<br>
 	 *<br>
 	 * This function can carry a delay of 10 milliseconds before it returns, but Kahoot questions take more than 1000 milliseconds to load, so this shouldn't be a problem.
-	 * @return last answer submitted
+	 * @return last answer submitted, returns -1 if this Kahoot object isn't in game for whatever reason
 	 * @throws InterruptedException if sleep is interrupted
 	 */
 	public int getLastAnswerBlocking() throws InterruptedException {
@@ -122,18 +122,18 @@ class Kahoot extends Thread {
 				return -1; //halt if the game isn't active.
 		}
 		qa = false;
-		return lastanswer;
+		return this.active ? lastanswer : -1;
 	}
 
 	/**
 	 * Get the last answer submitted to a question by this Kahoot object.
 	 *
 	 * WARNING: This function is non-blocking, meaning it can return the same answer for the same question twice. If you want a blocking function, check getLastAnswerBlocking()
-	 * @return last answer submitted
+	 * @return last answer submitted, returns -1 if this Kahoot object isn't in game for whatever reason
 	 */
 	public int getLastAnswer() {
 		qa = false;
-		return lastanswer;
+		return this.active ? lastanswer : -1;
 	}
 	
 	/**
