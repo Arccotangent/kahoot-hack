@@ -8,20 +8,64 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.json.JSONObject;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.io.IOException;
-import java.util.regex.Pattern;
 
 public class Session {
 	
 	private static boolean wasLastGameTeam = false;
 	
-	private static long challengeSolution = 0; //last challenge solution
+	private static String challengeSolution = ""; //last challenge solution
 	
 	static boolean getLastGameTeam() {
 		return wasLastGameTeam;
 	}
 	
-	private static long solveChallenge(String challenge) {
+	/**
+	 * Solve the new JS based challenges
+	 * @param rawChallenge The raw challenge string returned from the GET request.
+	 * @return The solved session token
+	 */
+	private static String solveJSChallenge(String rawChallenge) {
+		JSONObject jsonChallenge = new JSONObject(rawChallenge);
+		String challenge = jsonChallenge.getString("challenge");
+		String[] challengeParts = challenge.split(";");
+		
+		if (Kahoot.isDebug()) {
+			for (int i = 0; i < challengeParts.length; i++) {
+				System.out.println("challengeParts[" + i + "] = " + challengeParts[i]);
+			}
+		}
+		
+		for (int i = 0; i < challengeParts.length; i++) {
+			challengeParts[i] = challengeParts[i] + ";";
+		}
+		
+		challengeParts[2] = "";
+		challengeParts[3] = "return message.replace(/./g, function(char, position) {return String.fromCharCode((((char.charCodeAt(0) * position) + offset) % 77) + 48)";
+		
+		StringBuilder challengeBuilder = new StringBuilder();
+		for (String challengePart : challengeParts) {
+			challengeBuilder.append(challengePart);
+			challengeBuilder.append("\n");
+		}
+		
+		ScriptEngineManager manager = new ScriptEngineManager();
+		ScriptEngine jsEngine = manager.getEngineByName("JavaScript");
+		
+		try {
+			return (String)jsEngine.eval(challengeBuilder.toString());
+		} catch (ScriptException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/*
+	@Deprecated
+	private static long solveRegexChallenge(String challenge) {
 		challenge = challenge.replace("  ", " ");
 		String[] challengeArray;
 		
@@ -82,6 +126,7 @@ public class Session {
 		
 		return solution;
 	}
+	*/
 	
 	/**
 	 * Check if a game PIN is valid.
@@ -111,7 +156,7 @@ public class Session {
 	 */
 	static String decodeSessionToken(String encoded) {
 		byte[] rawToken = Base64.decodeBase64(encoded);
-		byte[] challengeBytes = Long.toString(challengeSolution).getBytes();
+		byte[] challengeBytes = challengeSolution.getBytes();
 		
 		for (int i = 0; i < rawToken.length; i++) {
 			rawToken[i] ^= challengeBytes[i % challengeBytes.length];
@@ -145,11 +190,17 @@ public class Session {
 						System.out.println("SESSION REQUEST RESPONSE BODY = " + response);
 					wasLastGameTeam = response.toLowerCase().contains("team");
 					
+					challengeSolution = solveJSChallenge(response);
+					if (Kahoot.isDebug()) {
+						System.out.println("challengeSolution = " + challengeSolution);
+					}
+					/*
 					if (response.toLowerCase().contains("challenge")) {
 						JSONObject j = new JSONObject(response);
 						String challenge = j.getString("challenge");
-						challengeSolution = solveChallenge(challenge);
+						challengeSolution = solveRegexChallenge(challenge);
 					}
+					*/
 					return h[i].getValue();
 				}
 			}

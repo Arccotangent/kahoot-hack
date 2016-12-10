@@ -32,6 +32,7 @@ class Kahoot extends Thread {
 	private boolean qa; //Question answered? prevents duplicate returns on getLastAnswerBlocking
 	private boolean la2v = false; //Was 2 a valid answer on the last question?
 	private boolean la3v = false; //Was 3 a valid answer on the last question?
+	private int question; //Question number
 	private boolean isTeam = false; //Is this a team game or classic PvP?
 	
 	private static boolean debug = false; //Connection debug mode, not useful to regular users
@@ -103,6 +104,10 @@ class Kahoot extends Thread {
 	 */
 	public boolean gameRunning() {
 		return active;
+	}
+	
+	public int getQuestionID() {
+		return question;
 	}
 
 	/**
@@ -558,6 +563,7 @@ class Kahoot extends Thread {
 						la3v = true;
 					}
 					Random rng = new Random();
+					question = content.getInt("questionIndex") + 1;
 					int answer = rng.nextInt(answers.length());
 					int ranswer = answers.getInt(Integer.toString(answer));
 					this.answerQuestion(ranswer);
@@ -624,7 +630,8 @@ class Kahoot extends Thread {
 						la2v = true;
 						la3v = true;
 					}
-					System.out.println("Answers: 0 through " + (answers.length() - 1));
+					question = content.getInt("questionIndex") + 1;
+					System.out.println("Answers for question " + question + ": 0 through " + (answers.length() - 1));
 					System.out.print("Answer: ");
 					int ans = in.nextInt();
 					lastanswer = ans;
@@ -647,7 +654,7 @@ class Kahoot extends Thread {
 					totalscore = c.getInt("totalScore");
 					rank = c.getInt("rank");
 					Object rawnemesis = c.get("nemesis");
-					if (rawnemesis == null) {
+					if (rawnemesis == null || rawnemesis == JSONObject.NULL) {
 						nemesis = "no one";
 					} else {
 						nemesis = (String) rawnemesis;

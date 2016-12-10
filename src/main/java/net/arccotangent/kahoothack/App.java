@@ -1,5 +1,6 @@
 package net.arccotangent.kahoothack;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
@@ -11,6 +12,17 @@ public class App {
 				running++;
 		}
 		return running;
+	}
+	
+	private static Kahoot[] clean(Kahoot[] bots) {
+		ArrayList<Kahoot> kahoots = new ArrayList<>();
+		for (Kahoot bot : bots) {
+			if (bot.gameRunning())
+				kahoots.add(bot);
+		}
+		Kahoot[] newbots = new Kahoot[kahoots.size()];
+		kahoots.toArray(newbots);
+		return newbots;
 	}
 	
 	private static boolean q2Valid(Kahoot[] bots) {
@@ -31,6 +43,16 @@ public class App {
 				break;
 		}
 		return valid;
+	}
+	
+	private static int getQuestionID(Kahoot[] bots) {
+		int id;
+		for (Kahoot bot : bots) {
+			if (bot.gameRunning()) {
+				return bot.getQuestionID();
+			}
+		}
+		return -1;
 	}
 
 	public static void main(String[] args) {
@@ -94,16 +116,17 @@ public class App {
 			System.out.println((botz[0].isTeamGame() ? "Gamemode: TEAMS" : "Gamemode: CLASSIC PVP"));
 			System.out.println("All bots are in game. While the bots are running, the main thread will print answer statistics.");
 
-			int quid = 0; //Question number
+			int quid; //Question number
 
 			int a = 0;
 			int b = 0;
 			int c = 0;
 			int d = 0;
-			int invalid = 0;
+			//int invalid = 0;
 
 			while (botsRunning(botz) >= 1) { //while at least 1 bot is still in the game...
-				for (Kahoot bot : botz) { //...get all answers submitted by the bots and count them up...
+				botz = clean(botz); //...clean out any kicked/errored bots...
+				for (Kahoot bot : botz) { //...get all answers submitted by the remaining bots and count them up...
 					try {
 						int la = bot.getLastAnswerBlocking();
 						if (la == 0) {
@@ -114,8 +137,8 @@ public class App {
 							c++;
 						} else if (la == 3) {
 							d++;
-						} else if (la == -1) {
-							invalid++;
+						//} else if (la == -1) {
+						//	invalid++;
 						} else {
 							break;
 						}
@@ -126,18 +149,19 @@ public class App {
 				if (botsRunning(botz) < 1) {
 					break;
 				}
-				quid++;
+				quid = getQuestionID(botz);
 				System.out.println("---QUESTION " + quid + " STATISTICS---"); //..then display the statistics...
+				System.out.println("Total bots: " + botz.length);
 				System.out.println("Answer 0: " + a);
 				System.out.println("Answer 1: " + b);
 				System.out.println("Answer 2: " + c + (q2Valid(botz) ? "" : "(invalid answer)"));
 				System.out.println("Answer 3: " + d + (q3Valid(botz) ? "" : "(invalid answer)"));
-				System.out.println("Invalid (disconnected/kicked from game): " + invalid);
-				a = 0; //...finally clear the variables for the next count
+				//System.out.println("Invalid (disconnected/kicked from game): " + invalid);
+				a = 0; //...and finally clear the variables for the next count
 				b = 0;
 				c = 0;
 				d = 0;
-				invalid = 0;
+				//invalid = 0;
 			}
 
 			System.out.println("The game appears to have ended. Exiting the program!");
