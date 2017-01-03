@@ -29,6 +29,7 @@ class Kahoot extends Thread {
 	private int totalscore; //Total score
 	private int rank; //This Kahoot object's rank
 	private String nemesis; //The person directly ahead of us. If there is no one ahead of us (1st place) this will be set to "no one"
+	private int nemesispoints;
 	private boolean qa; //Question answered? prevents duplicate returns on getLastAnswerBlocking
 	private boolean la2v = false; //Was 2 a valid answer on the last question?
 	private boolean la3v = false; //Was 3 a valid answer on the last question?
@@ -653,16 +654,18 @@ class Kahoot extends Thread {
 					score = c.getInt("points");
 					totalscore = c.getInt("totalScore");
 					rank = c.getInt("rank");
-					Object rawnemesis = c.get("nemesis");
+					JSONObject rawnemesis = c.getJSONObject("nemesis");
 					if (rawnemesis == null || rawnemesis == JSONObject.NULL) {
 						nemesis = "no one";
+						nemesispoints = score;
 					} else {
-						nemesis = (String) rawnemesis;
+						nemesis = rawnemesis.getString("name");
+						nemesispoints = rawnemesis.getInt("totalScore");
 					}
 					System.out.println(correct ? "Correct!" : "Incorrect.");
 					System.out.println("You got " + score + " points from that question");
 					System.out.println("You currently have " + totalscore + " points");
-					System.out.println("You are in rank " + rank + ", behind " + nemesis);
+					System.out.println("You are in rank " + rank + ", behind " + nemesis + ". Nemesis has " + nemesispoints + " points.");
 				} else if (response.contains("quizId")) {
 					JSONObject d = a.getJSONObject("data");
 					JSONObject c = new JSONObject(d.getString("content").replace("\\", ""));
