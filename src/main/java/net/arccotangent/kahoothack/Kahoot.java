@@ -45,9 +45,9 @@ class Kahoot extends Thread {
 	 *
 	 * @param username the username that this Kahoot object will use to connect to the game
 	 * @param gamepin the Kahoot.it game PIN
-	 * @param stdin a Scanner scanning System.in, if this parameter is not scanning System.in, expect bugs and even crashes.
-	 * @param gamemode the gamemode. 1 = play normally, 2 = auto answer questions randomly, anything else is invalid
-	 * @param instantActive whether the object should instantly be active. If unsure, set to false.
+	 * @param stdin a Scanner scanning System.in. If this parameter is not scanning System.in, expect bugs and even crashes.
+	 * @param gamemode the gamemode. 1 = play normally, 2 = auto answer questions randomly, anything else is invalid and won't work
+	 * @param instantActive whether the object should instantly be active (for a bot?). If unsure, set to false.
 	 */
 	public Kahoot(String username, int gamepin, Scanner stdin, int gamemode, boolean instantActive) {
 		uname = username;
@@ -100,13 +100,17 @@ class Kahoot extends Thread {
 	}
 
 	/**
-	 * Check if the game is running (in progress)
-	 * @return true if the game is running, otherwise false
+	 * Check if this Kahoot object is in game. If the Kahoot object was ejected from the game for whatever reason, this will return false.
+	 * @return true if the Kahoot object is in game, false otherwise
 	 */
 	public boolean gameRunning() {
 		return active;
 	}
 	
+	/**
+	 * Get the current question number (ID)
+	 * @return The current question number
+	 */
 	public int getQuestionID() {
 		return question;
 	}
@@ -132,8 +136,8 @@ class Kahoot extends Thread {
 	}
 
 	/**
-	 * Get the last answer submitted to a question by this Kahoot object.
-	 *
+	 * Get the last answer submitted to a question by this Kahoot object.<br>
+	 * <br>
 	 * WARNING: This function is non-blocking, meaning it can return the same answer for the same question twice. If you want a blocking function, check getLastAnswerBlocking()
 	 * @return last answer submitted, returns -1 if this Kahoot object isn't in game for whatever reason
 	 */
@@ -144,7 +148,6 @@ class Kahoot extends Thread {
 	
 	/**
 	 * Get the score from the last question answered
-	 *
 	 * @return score gained from last answered question
 	 */
 	public int getLastScore() {
