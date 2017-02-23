@@ -19,8 +19,22 @@ public class Session {
 	
 	private static String challengeSolution = ""; //last challenge solution
 	
+	private static boolean wasLastGame2FA = false; //was last game 2-factor auth?
+	
+	/**
+	 * Check if the last game was a team game
+	 * @return true if team game, false if classic PvP
+	 */
 	static boolean getLastGameTeam() {
 		return wasLastGameTeam;
+	}
+	
+	/**
+	 * Check if the last game had 2FA enabled
+	 * @return true if 2FA, false otherwise
+	 */
+	static boolean getLastGame2FA() {
+		return wasLastGame2FA;
 	}
 	
 	/**
@@ -189,6 +203,11 @@ public class Session {
 					if (Kahoot.isDebug())
 						System.out.println("SESSION REQUEST RESPONSE BODY = " + response);
 					wasLastGameTeam = response.toLowerCase().contains("team");
+					
+					JSONObject json = new JSONObject(response);
+					wasLastGame2FA = json.getBoolean("twoFactorAuth");
+					if (Kahoot.isDebug())
+						System.out.println("TWO FACTOR AUTH = " + wasLastGame2FA);
 					
 					challengeSolution = solveJSChallenge(response);
 					if (Kahoot.isDebug()) {

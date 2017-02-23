@@ -35,6 +35,7 @@ class Kahoot extends Thread {
 	private boolean la3v = false; //Was 3 a valid answer on the last question?
 	private int question; //Question number
 	private boolean isTeam = false; //Is this a team game or classic PvP?
+	private boolean twoFactorAuth = false; //Does this game include 2-factor auth?
 	
 	private static boolean debug = false; //Connection debug mode, not useful to regular users
 
@@ -185,6 +186,14 @@ class Kahoot extends Thread {
 	public boolean isTeamGame() {
 		return isTeam;
 	}
+	
+	/**
+	 * Check whether game has 2 factor auth enabled
+	 * @return true if 2FA enabled, false otherwise
+	 */
+	public boolean is2FAGame() {
+		return twoFactorAuth;
+	}
 
 	/**
 	 * Initialize this Kahoot object and connect to the server.<br>
@@ -197,6 +206,8 @@ class Kahoot extends Thread {
 		stoken = Session.decodeSessionToken(stoken);
 		
 		isTeam = Session.getLastGameTeam();
+		twoFactorAuth = Session.getLastGame2FA();
+		
 		cli = HTTP.getClient();
 		
 		if (debug) {

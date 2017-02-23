@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class App {
 	
 	private static final int max_bps = 5; //Maximum amount of bot connections per second
+	public static final Scanner stdin = new Scanner(System.in);
 	
 	private static int botsRunning(Kahoot[] bots) {
 		int running = 0;
@@ -63,7 +64,6 @@ public class App {
 	public static void main(String[] args) {
 		
 		System.out.print("Enter Game PIN: ");
-		final Scanner stdin = new Scanner(System.in);
 		final int gamepin = stdin.nextInt();
 		stdin.nextLine(); //There is a newline character submitted with the int
 		System.out.print("Checking game PIN validity... ");
@@ -86,6 +86,10 @@ public class App {
 			Kahoot k = new Kahoot(base, gamepin, stdin, gm, false);
 			k.initialize();
 			System.out.println((k.isTeamGame() ? "Gamemode: TEAMS" : "Gamemode: CLASSIC PVP"));
+			if (k.is2FAGame()) {
+				System.out.println("2FA games are not supported yet.");
+				System.exit(0);
+			}
 			k.start();
 		} else if (gm == 2) {
 			Kahoot[] botz = null;
@@ -148,6 +152,10 @@ public class App {
 			System.out.println("");
 			
 			System.out.println((botz[0].isTeamGame() ? "Gamemode: TEAMS" : "Gamemode: CLASSIC PVP"));
+			if (botz[0].is2FAGame()) {
+				System.out.println("2FA games are not supported yet.");
+				System.exit(0);
+			}
 			System.out.println("All bots are in game. While the bots are running, the main thread will print answer statistics.");
 
 			int quid; //Question number
