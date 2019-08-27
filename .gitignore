@@ -2,3 +2,4 @@ build/
 *.class
 .idea/
 .gradle/
+names.txt

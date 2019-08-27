@@ -1,3 +1,23 @@
+# Project Discontinued
+
+I don't have sufficient time or motivation to update this tool anymore with my school, career, and personal life using most of my free time, so as of August 27, 2019 I'm discontinuing the project for an indefinite amount of time.
+
+It's been over 2 1/2 years since I last updated this and the Kahoot protocol has likely gone through major changes ever since.
+As can be expected, the changes to the Kahoot protocol have broken the tool and rendered it effectively useless.
+This fact combined with the code quality and various redundancies would make it even more difficult to cleanup and update.
+
+This will likely be the last commit to this repository (at least for a while).
+The project is being licensed under the GNU AGPLv3, effectively making it free software.
+Find the full license text in LICENSE.md.
+
+If you're looking for a more updated Kahoot tool, check out this repository (this project was based on the knowledge and code in unixpickle's repository): https://github.com/unixpickle/kahoot-hack
+
+If the tool is ever updated, it will be rewritten from scratch and uploaded to a new repository.
+
+TLDR: The tool is very broken and likely won't be updated anymore. If it is updated, it will be rewritten from scratch.
+
+The contents of the readme file are below as an archive.
+
 # kahoot-hack
 
 Reverse engineering kahoot.it
